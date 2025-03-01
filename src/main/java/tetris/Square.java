@@ -1,4 +1,4 @@
-package tetris1;
+package tetris;
 
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;

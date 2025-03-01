@@ -1,4 +1,4 @@
-package tetris1;
+package tetris;
 public class Constants {
 
     // width of each square

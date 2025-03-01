@@ -1,4 +1,4 @@
-package tetris1;
+package tetris;
 
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -98,7 +98,7 @@ public class Game {
         int randInt = (int) (Math.random() * 7);
         switch (randInt) {
             case 0:
-                this.piece = new Piece(tetris1.Constants.I_PIECE_COORDS,
+                this.piece = new Piece(tetris.Constants.I_PIECE_COORDS,
                         this.gamePane, Constants.I_CENTER);
                 this.piece.setPieceColor(Color.AQUA);
                 break;
