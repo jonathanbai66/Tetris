@@ -32,6 +32,9 @@ public class Square {
         this.col = col;
         this.row = row;
         this.rect.setX(col * Constants.SQUARE_WIDTH);
-        this.rect.setY(col * Constants.SQUARE_WIDTH);
+        this.rect.setY(row * Constants.SQUARE_WIDTH);
+    }
+    public void down(){
+        this.setCoordinates(this.col, this.row + 1);
     }
 }

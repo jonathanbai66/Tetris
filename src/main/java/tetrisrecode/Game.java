@@ -1,5 +1,8 @@
 package tetrisrecode;
 
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -7,6 +10,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.util.Duration;
 
 public class Game {
     private Board board;
@@ -19,6 +23,7 @@ public class Game {
     public Game(Pane gamePane){
         this.gamePane = gamePane;
         this.board = new Board(this.gamePane);
+        this.setUpTimeline();
         this.spawnPiece();
         this.createControlPane();
     }
@@ -68,5 +73,15 @@ public class Game {
                 this.piece.setPieceColor(Color.GREEN);
                 break;
         }
+    }
+    private void setUpTimeline(){
+        KeyFrame frame1 = new KeyFrame(Duration.seconds(Constants.DURATION),
+                (ActionEvent e) -> this.updateTimeline());
+        Timeline timeline = new Timeline(frame1);
+        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.play();
+    }
+    private void updateTimeline(){
+        this.piece.moveDown();
     }
 }

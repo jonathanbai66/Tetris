@@ -22,7 +22,7 @@ public class Piece {
     }
     private void generatePiece(Pane gamePane){
         for(int i = 0; i < this.pieceSquares.length; i++){
-            this.pieceSquares[i] = new Square (gamePane, Constants.STARTING_ROW_NUMBER,
+            this.pieceSquares[i] = new Square(gamePane, Constants.STARTING_ROW_NUMBER,
                     Constants.STARTING_COLUMN_NUMBER);
         }
     }
@@ -37,6 +37,12 @@ public class Piece {
     public void setPieceColor(Color color){
         for(int i = 0; i < this.pieceSquares.length; i++){
             this.pieceSquares[i].setColor(color);
+        }
+    }
+    public void moveDown(){
+        this.centerRow += 1;
+        for(int i = 0; i < this.pieceSquares.length; i++){
+            this.pieceSquares[i].down();
         }
     }
 }
