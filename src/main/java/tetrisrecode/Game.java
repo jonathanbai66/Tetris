@@ -156,7 +156,20 @@ public class Game {
                     this.addPiece();
                 }
             break;
+            case UP:
+                if (this.isStopped){
+                }
+                else {
+                    this.piece.rotatePiece();
+                    this.checkRotation();
+                }
+                break;
         }
         e.consume();
+    }
+    private void checkRotation(){
+        if (this.checkCollision(0,0)){
+            this.piece.undoRotate();
+        }
     }
 }

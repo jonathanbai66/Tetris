@@ -74,4 +74,24 @@ public class Piece {
             this.pieceSquares[i].moveSide(moveAmount);
         }
     }
+    public void rotatePiece(){
+        if (this.center == Constants.SQUARE_CENTER){
+        }
+        else {
+            for (int i = 0; i < this.pieceSquares.length; i++){
+                this.pieceSquares[i].setCoordinates(this.centerCol + this.centerRow - this.pieceSquares[i].getRow(),
+                        this.centerRow - this.centerCol + this.pieceSquares[i].getCol());
+            }
+        }
+    }
+    public void undoRotate(){
+        if (this.center == Constants.SQUARE_CENTER){
+        }
+        else {
+            for (int i = 0; i < this.pieceSquares.length; i++){
+                this.pieceSquares[i].setCoordinates(this.centerCol - this.centerRow + this.pieceSquares[i].getRow(),
+                        this.centerRow + this.centerCol - this.pieceSquares[i].getCol());
+            }
+        }
+    }
 }
