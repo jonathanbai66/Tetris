@@ -6,6 +6,8 @@ import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -23,9 +25,11 @@ public class Game {
 
     public Game(Pane gamePane){
         this.gamePane = gamePane;
+        this.gamePane.setFocusTraversable(true);
         this.board = new Board(this.gamePane);
         this.setUpTimeline();
         this.spawnPiece();
+        this.gamePane.setOnKeyPressed((KeyEvent e) -> this.handleKeyPress(e));
         this.createControlPane();
     }
     private void createControlPane(){
@@ -112,5 +116,47 @@ public class Game {
             }
             this.spawnPiece();
         }
+    }
+    private void handleKeyPress(KeyEvent e){
+        KeyCode keyPressed = e.getCode();
+        switch(keyPressed){
+            case RIGHT:
+                if (this.isStopped){
+                }
+                else {
+                    if (!this.checkCollision(0,1)){
+                        this.piece.moveHorizontally(Constants.MOVE_AMOUNT);
+                    }
+                }
+                break;
+            case LEFT:
+                if (this.isStopped){
+                }
+                else {
+                    if (!this.checkCollision(0,-1)){
+                        this.piece.moveHorizontally(-Constants.MOVE_AMOUNT);
+                    }
+                }
+                break;
+            case DOWN:
+                if (this.isStopped){
+                }
+                else {
+                    this.addPiece();
+                    this.piece.moveDown();
+                }
+                break;
+            case SPACE:
+                if (this.isStopped){
+                }
+                else {
+                    while (!this.checkCollision(1, 0)) {
+                        this.piece.moveDown();
+                    }
+                    this.addPiece();
+                }
+            break;
+        }
+        e.consume();
     }
 }

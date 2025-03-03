@@ -49,4 +49,7 @@ public class Square {
     public void removeSquare(){
         this.gamePane.getChildren().removeAll(this.rect);
     }
+    public void moveSide(int moveAmount){
+        this.setCoordinates(this.col + moveAmount, this.row);
+    }
 }

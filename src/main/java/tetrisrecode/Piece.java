@@ -68,4 +68,10 @@ public class Piece {
             this.pieceSquares[i].removeSquare();
         }
     }
+    public void moveHorizontally(int moveAmount){
+        this.centerCol += moveAmount;
+        for (int i = 0; i < this.pieceSquares.length; i++){
+            this.pieceSquares[i].moveSide(moveAmount);
+        }
+    }
 }
