@@ -26,4 +26,7 @@ public class Board {
             }
         }
     }
+    public Square[][] getArray(){
+        return this.squares;
+    }
 }

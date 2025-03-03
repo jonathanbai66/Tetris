@@ -45,4 +45,18 @@ public class Piece {
             this.pieceSquares[i].down();
         }
     }
+    public int[] getColCoords(){
+        int[] piecesCol = new int[4];
+        for(int i = 0; i < this.pieceSquares.length; i++){
+            piecesCol[i] = this.pieceSquares[i].getCol();
+        }
+        return piecesCol;
+    }
+    public int[] getRowCoords(){
+        int[] piecesRow = new int[4];
+        for(int i = 0; i < this.pieceSquares.length; i++){
+            piecesRow[i] = this.pieceSquares[i].getRow();
+        }
+        return piecesRow;
+    }
 }

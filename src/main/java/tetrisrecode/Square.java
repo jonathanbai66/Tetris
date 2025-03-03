@@ -37,4 +37,13 @@ public class Square {
     public void down(){
         this.setCoordinates(this.col, this.row + 1);
     }
+    public int getCol(){
+        return this.col;
+    }
+    public int getRow(){
+        return this.row;
+    }
+    public Paint getColor(){
+        return this.rect.getFill();
+    }
 }

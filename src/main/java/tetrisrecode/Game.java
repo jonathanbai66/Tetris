@@ -19,6 +19,7 @@ public class Game {
     private VBox vPane;
     private Button button;
     private Label message;
+    boolean isStopped = false;
 
     public Game(Pane gamePane){
         this.gamePane = gamePane;
@@ -82,6 +83,22 @@ public class Game {
         timeline.play();
     }
     private void updateTimeline(){
-        this.piece.moveDown();
+        if (this.isStopped){
+        }
+        else {
+            if (!this.checkCollision(1,0)){
+                this.piece.moveDown();
+            }
+        }
+    }
+    public boolean checkCollision(int rowOffset, int colOffset){
+        int[] pieceRows = this.piece.getRowCoords();
+        int[] pieceCols = this.piece.getColCoords();
+        for (int i = 0; i < 4; i++){
+            if (this.board.getArray()[pieceRows[i] + rowOffset][pieceCols[i] + colOffset].getColor() != Color.BLACK){
+                return true;
+            }
+        }
+        return false;
     }
 }
