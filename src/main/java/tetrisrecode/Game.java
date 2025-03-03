@@ -94,6 +94,7 @@ public class Game {
             if (!this.checkCollision(1,0)){
                 this.piece.moveDown();
             }
+            this.board.checkRows();
         }
     }
     public boolean checkCollision(int rowOffset, int colOffset){
@@ -114,6 +115,7 @@ public class Game {
             for (int i = 0; i < 4; i++){
                 this.board.getArray()[pieceRows[i]][pieceCols[i]].setColor(this.piece.getPieceColor());
             }
+            this.board.checkRows();
             this.spawnPiece();
         }
     }
