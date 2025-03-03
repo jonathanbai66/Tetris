@@ -2,6 +2,7 @@ package tetrisrecode;
 
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 
 public class Piece {
     private int[][] coordinates;
@@ -34,6 +35,9 @@ public class Piece {
                     Constants.CENTER_ROW_OFFSET + this.coordinates[i][1]);
         }
     }
+    public Paint getPieceColor(){
+        return this.pieceSquares[1].getColor();
+    }
     public void setPieceColor(Color color){
         for(int i = 0; i < this.pieceSquares.length; i++){
             this.pieceSquares[i].setColor(color);
@@ -58,5 +62,10 @@ public class Piece {
             piecesRow[i] = this.pieceSquares[i].getRow();
         }
         return piecesRow;
+    }
+    public void removeMe(){
+        for (int i = 0; i < this.pieceSquares.length; i++){
+            this.pieceSquares[i].removeSquare();
+        }
     }
 }

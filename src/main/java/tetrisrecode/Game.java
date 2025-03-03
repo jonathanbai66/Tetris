@@ -86,6 +86,7 @@ public class Game {
         if (this.isStopped){
         }
         else {
+            this.addPiece();
             if (!this.checkCollision(1,0)){
                 this.piece.moveDown();
             }
@@ -100,5 +101,16 @@ public class Game {
             }
         }
         return false;
+    }
+    public void addPiece(){
+        if (this.checkCollision(1,0)){
+            int[] pieceRows = this.piece.getRowCoords();
+            int[] pieceCols = this.piece.getColCoords();
+            this.piece.removeMe();
+            for (int i = 0; i < 4; i++){
+                this.board.getArray()[pieceRows[i]][pieceCols[i]].setColor(this.piece.getPieceColor());
+            }
+            this.spawnPiece();
+        }
     }
 }

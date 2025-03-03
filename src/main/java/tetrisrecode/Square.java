@@ -46,4 +46,7 @@ public class Square {
     public Paint getColor(){
         return this.rect.getFill();
     }
+    public void removeSquare(){
+        this.gamePane.getChildren().removeAll(this.rect);
+    }
 }
