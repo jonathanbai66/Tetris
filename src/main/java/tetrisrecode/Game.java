@@ -22,6 +22,7 @@ public class Game {
     private Button button;
     private Label message;
     boolean isStopped = false;
+    boolean isGameOver = false;
 
     public Game(Pane gamePane){
         this.gamePane = gamePane;
@@ -78,6 +79,10 @@ public class Game {
                 this.piece.setPieceColor(Color.GREEN);
                 break;
         }
+        if (this.checkCollision(0,1) && this.checkCollision(0,-1) &&
+        this.checkCollision(1,0) || this.checkCollision(0,0)){
+            this.gameOver();
+        }
     }
     private void setUpTimeline(){
         KeyFrame frame1 = new KeyFrame(Duration.seconds(Constants.DURATION),
@@ -91,10 +96,12 @@ public class Game {
         }
         else {
             this.addPiece();
-            if (!this.checkCollision(1,0)){
-                this.piece.moveDown();
+            if (!this.isGameOver) {
+                if (!this.checkCollision(1, 0)) {
+                    this.piece.moveDown();
+                }
+                this.board.checkRows();
             }
-            this.board.checkRows();
         }
     }
     public boolean checkCollision(int rowOffset, int colOffset){
@@ -166,6 +173,19 @@ public class Game {
                     this.checkRotation();
                 }
                 break;
+            case P:
+                if (!this.isGameOver){
+                    if (this.isStopped) {
+                        this.isStopped = false;
+                        this.gamePane.getChildren().removeAll(this.message);
+                    }
+                    else {
+                        this.isStopped = true;
+                        this.gamePane.getChildren().add(this.message = new Label("Paused"));
+                        this.message.setFont(new Font(Constants.LABEL_FONT_SIZE));
+                        this.message.setTextFill(Color.WHITE);
+                    }
+                }
         }
         e.consume();
     }
@@ -173,5 +193,12 @@ public class Game {
         if (this.checkCollision(0,0)){
             this.piece.undoRotate();
         }
+    }
+    public void gameOver(){
+        this.isGameOver = true;
+        this.gamePane.getChildren().add(this.message = new Label("Game Over!"));
+        this.message.setFont(new Font(Constants.LABEL_FONT_SIZE));
+        this.message.setTextFill(Color.WHITE);
+        this.isStopped = true;
     }
 }

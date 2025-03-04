@@ -27,5 +27,6 @@ public class Constants {
     public static final int [] ZIGZAG2_CENTER = {0,1};
     public static final double DURATION = 0.9;
     public static final int MOVE_AMOUNT = 1;
+    public static final int LABEL_FONT_SIZE = 20;
 
 }
