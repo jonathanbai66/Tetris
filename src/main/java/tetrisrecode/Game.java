@@ -95,10 +95,12 @@ public class Game {
         if (this.isStopped){
         }
         else {
-            this.addPiece();
             if (!this.isGameOver) {
                 if (!this.checkCollision(1, 0)) {
                     this.piece.moveDown();
+                }
+                else {
+                    this.addPiece();
                 }
                 this.board.checkRows();
             }
@@ -115,16 +117,15 @@ public class Game {
         return false;
     }
     public void addPiece(){
-        if (this.checkCollision(1,0)){
+        //if (this.checkCollision(1,0)){
             int[] pieceRows = this.piece.getRowCoords();
             int[] pieceCols = this.piece.getColCoords();
             this.piece.removeMe();
             for (int i = 0; i < 4; i++){
                 this.board.getArray()[pieceRows[i]][pieceCols[i]].setColor(this.piece.getPieceColor());
             }
-            this.board.checkRows();
             this.spawnPiece();
-        }
+        //}
     }
     private void handleKeyPress(KeyEvent e){
         KeyCode keyPressed = e.getCode();
@@ -151,8 +152,12 @@ public class Game {
                 if (this.isStopped){
                 }
                 else {
-                    this.addPiece();
-                    this.piece.moveDown();
+                    if (this.checkCollision(1,0)) {
+                        this.addPiece();
+                    }
+                    else {
+                        this.piece.moveDown();
+                    }
                 }
                 break;
             case SPACE:
@@ -163,6 +168,7 @@ public class Game {
                         this.piece.moveDown();
                     }
                     this.addPiece();
+                    this.board.checkRows();
                 }
             break;
             case UP:
