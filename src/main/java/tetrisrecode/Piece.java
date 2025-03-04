@@ -94,4 +94,16 @@ public class Piece {
             }
         }
     }
+    public Piece copyPiece(){
+        return new Piece(this.coordinates, this.gamePane, this.center);
+    }
+    public int getCenterRow(){
+        return centerRow;
+    }
+    public void setRow(int[] row, int centerRow) {
+        this.centerRow = centerRow;
+        for (int i = 0; i < this.pieceSquares.length; i++) {
+            this.pieceSquares[i].setSquareRow(row[i]);
+        }
+    }
 }

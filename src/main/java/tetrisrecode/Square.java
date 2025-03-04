@@ -52,4 +52,8 @@ public class Square {
     public void moveSide(int moveAmount){
         this.setCoordinates(this.col + moveAmount, this.row);
     }
+    public void setSquareRow(int row){
+        this.row = row;
+        this.rect.setY(row * Constants.SQUARE_WIDTH);
+    }
 }

@@ -23,7 +23,7 @@ public class Game {
     private Label message;
     boolean isStopped = false;
     boolean isGameOver = false;
-
+    private Piece ghostPiece;
     public Game(Pane gamePane){
         this.gamePane = gamePane;
         this.gamePane.setFocusTraversable(true);
@@ -79,10 +79,11 @@ public class Game {
                 this.piece.setPieceColor(Color.GREEN);
                 break;
         }
-        if (this.checkCollision(0,1) && this.checkCollision(0,-1) &&
-        this.checkCollision(1,0) || this.checkCollision(0,0)){
+        if (this.checkCollision(0,1, this.piece) && this.checkCollision(0,-1, this.piece) &&
+        this.checkCollision(1,0, this.piece) || this.checkCollision(0,0, this.piece)){
             this.gameOver();
         }
+        this.createGhostPiece(this.piece);
     }
     private void setUpTimeline(){
         KeyFrame frame1 = new KeyFrame(Duration.seconds(Constants.DURATION),
@@ -96,28 +97,30 @@ public class Game {
         }
         else {
             if (!this.isGameOver) {
-                if (!this.checkCollision(1, 0)) {
+                if (!this.checkCollision(1, 0, this.piece)) {
                     this.piece.moveDown();
                 }
                 else {
+                    this.removeGhostPiece();
                     this.addPiece();
                 }
                 this.board.checkRows();
             }
         }
     }
-    public boolean checkCollision(int rowOffset, int colOffset){
-        int[] pieceRows = this.piece.getRowCoords();
-        int[] pieceCols = this.piece.getColCoords();
+    public boolean checkCollision(int rowOffset, int colOffset, Piece thePiece){
+        int[] pieceRows = thePiece.getRowCoords();
+        int[] pieceCols = thePiece.getColCoords();
         for (int i = 0; i < 4; i++){
-            if (this.board.getArray()[pieceRows[i] + rowOffset][pieceCols[i] + colOffset].getColor() != Color.BLACK){
+            if (this.board.getArray()[pieceRows[i] + rowOffset][pieceCols[i] + colOffset].getColor() != Color.BLACK
+                    && this.board.getArray()[pieceRows[i] + rowOffset][pieceCols[i] + colOffset].getColor()
+                    != Color.LIGHTGREY){
                 return true;
             }
         }
         return false;
     }
     public void addPiece(){
-        //if (this.checkCollision(1,0)){
             int[] pieceRows = this.piece.getRowCoords();
             int[] pieceCols = this.piece.getColCoords();
             this.piece.removeMe();
@@ -125,7 +128,6 @@ public class Game {
                 this.board.getArray()[pieceRows[i]][pieceCols[i]].setColor(this.piece.getPieceColor());
             }
             this.spawnPiece();
-        //}
     }
     private void handleKeyPress(KeyEvent e){
         KeyCode keyPressed = e.getCode();
@@ -134,8 +136,11 @@ public class Game {
                 if (this.isStopped){
                 }
                 else {
-                    if (!this.checkCollision(0,1)){
+                    if (!this.checkCollision(0,1, this.piece)){
                         this.piece.moveHorizontally(Constants.MOVE_AMOUNT);
+                        this.ghostPiece.moveHorizontally(Constants.MOVE_AMOUNT);
+                        this.setGhostPieceRow();
+                        this.moveGhostPiece();
                     }
                 }
                 break;
@@ -143,8 +148,11 @@ public class Game {
                 if (this.isStopped){
                 }
                 else {
-                    if (!this.checkCollision(0,-1)){
+                    if (!this.checkCollision(0,-1, this.piece)){
                         this.piece.moveHorizontally(-Constants.MOVE_AMOUNT);
+                        this.ghostPiece.moveHorizontally(-Constants.MOVE_AMOUNT);
+                        this.setGhostPieceRow();
+                        this.moveGhostPiece();
                     }
                 }
                 break;
@@ -152,7 +160,7 @@ public class Game {
                 if (this.isStopped){
                 }
                 else {
-                    if (this.checkCollision(1,0)) {
+                    if (this.checkCollision(1,0, this.piece)) {
                         this.addPiece();
                     }
                     else {
@@ -164,19 +172,23 @@ public class Game {
                 if (this.isStopped){
                 }
                 else {
-                    while (!this.checkCollision(1, 0)) {
+                    while (!this.checkCollision(1, 0, this.piece)) {
                         this.piece.moveDown();
                     }
                     this.addPiece();
                     this.board.checkRows();
                 }
-            break;
+                break;
             case UP:
                 if (this.isStopped){
                 }
                 else {
                     this.piece.rotatePiece();
-                    this.checkRotation();
+                    this.checkRotation(this.piece);
+                    this.setGhostPieceRow();
+                    this.ghostPiece.rotatePiece();
+                    this.checkRotation(this.ghostPiece);
+                    this.moveGhostPiece();
                 }
                 break;
             case P:
@@ -195,9 +207,9 @@ public class Game {
         }
         e.consume();
     }
-    private void checkRotation(){
-        if (this.checkCollision(0,0)){
-            this.piece.undoRotate();
+    private void checkRotation(Piece thePiece){
+        if (this.checkCollision(0,0, thePiece)){
+            thePiece.undoRotate();
         }
     }
     public void gameOver(){
@@ -206,5 +218,22 @@ public class Game {
         this.message.setFont(new Font(Constants.LABEL_FONT_SIZE));
         this.message.setTextFill(Color.WHITE);
         this.isStopped = true;
+    }
+    public void createGhostPiece(Piece copiedPiece){
+        this.ghostPiece = copiedPiece.copyPiece();
+        this.ghostPiece.setPieceColor(Color.LIGHTGREY);
+        this.moveGhostPiece();
+    }
+    public void removeGhostPiece(){
+        this.ghostPiece.setPieceColor(Color.BLACK);
+        this.ghostPiece.removeMe();
+    }
+    public void moveGhostPiece(){
+        if (!this.checkCollision(1, 0, this.ghostPiece)) {
+            this.ghostPiece.moveDown();
+        }
+    }
+    public void setGhostPieceRow(){
+        this.ghostPiece.setRow(this.piece.getRowCoords(), this.piece.getCenterRow());
     }
 }
