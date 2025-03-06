@@ -11,7 +11,8 @@ public class Piece {
     private int centerCol;
     private int centerRow;
     private int[] center;
-    public Piece(int[][] coords, Pane gamePane, int[] center){
+
+    public Piece(int[][] coords, Pane gamePane, int[] center) {
         this.center = center;
         this.centerCol = center[0];
         this.centerRow = center[1];
@@ -21,89 +22,107 @@ public class Piece {
         this.generatePiece(gamePane);
         this.arrangePiece();
     }
-    private void generatePiece(Pane gamePane){
-        for(int i = 0; i < this.pieceSquares.length; i++){
+
+    private void generatePiece(Pane gamePane) {
+        for (int i = 0; i < this.pieceSquares.length; i++) {
             this.pieceSquares[i] = new Square(gamePane, Constants.STARTING_ROW_NUMBER,
                     Constants.STARTING_COLUMN_NUMBER);
         }
     }
-    private void arrangePiece(){
+
+    private void arrangePiece() {
         this.centerCol += Constants.CENTER_COLUMN_OFFSET;
         this.centerRow += Constants.CENTER_ROW_OFFSET;
-        for(int i = 0; i < this.coordinates.length; i++){
+        for (int i = 0; i < this.coordinates.length; i++) {
             this.pieceSquares[i].setCoordinates(Constants.CENTER_COLUMN_OFFSET + this.coordinates[i][0],
                     Constants.CENTER_ROW_OFFSET + this.coordinates[i][1]);
         }
     }
-    public Paint getPieceColor(){
+
+    public Paint getPieceColor() {
         return this.pieceSquares[1].getColor();
     }
-    public void setPieceColor(Color color){
-        for(int i = 0; i < this.pieceSquares.length; i++){
+
+    public void setPieceColor(Color color) {
+        for (int i = 0; i < this.pieceSquares.length; i++) {
             this.pieceSquares[i].setColor(color);
         }
     }
-    public void moveDown(){
+
+    public void moveDown() {
         this.centerRow += 1;
-        for(int i = 0; i < this.pieceSquares.length; i++){
+        for (int i = 0; i < this.pieceSquares.length; i++) {
             this.pieceSquares[i].down();
         }
     }
-    public int[] getColCoords(){
+
+    public int[] getColCoords() {
         int[] piecesCol = new int[4];
-        for(int i = 0; i < this.pieceSquares.length; i++){
+        for (int i = 0; i < this.pieceSquares.length; i++) {
             piecesCol[i] = this.pieceSquares[i].getCol();
         }
         return piecesCol;
     }
-    public int[] getRowCoords(){
+
+    public int[] getRowCoords() {
         int[] piecesRow = new int[4];
-        for(int i = 0; i < this.pieceSquares.length; i++){
+        for (int i = 0; i < this.pieceSquares.length; i++) {
             piecesRow[i] = this.pieceSquares[i].getRow();
         }
         return piecesRow;
     }
-    public void removeMe(){
-        for (int i = 0; i < this.pieceSquares.length; i++){
+
+    public void removeMe() {
+        for (int i = 0; i < this.pieceSquares.length; i++) {
             this.pieceSquares[i].removeSquare();
         }
     }
-    public void moveHorizontally(int moveAmount){
+
+    public void moveHorizontally(int moveAmount) {
         this.centerCol += moveAmount;
-        for (int i = 0; i < this.pieceSquares.length; i++){
+        for (int i = 0; i < this.pieceSquares.length; i++) {
             this.pieceSquares[i].moveSide(moveAmount);
         }
     }
-    public void rotatePiece(){
-        if (this.center == Constants.SQUARE_CENTER){
-        }
-        else {
-            for (int i = 0; i < this.pieceSquares.length; i++){
+
+    public void rotatePiece() {
+        if (this.center == Constants.SQUARE_CENTER) {
+        } else {
+            for (int i = 0; i < this.pieceSquares.length; i++) {
                 this.pieceSquares[i].setCoordinates(this.centerCol + this.centerRow - this.pieceSquares[i].getRow(),
                         this.centerRow - this.centerCol + this.pieceSquares[i].getCol());
             }
         }
     }
-    public void undoRotate(){
-        if (this.center == Constants.SQUARE_CENTER){
-        }
-        else {
-            for (int i = 0; i < this.pieceSquares.length; i++){
+
+    public void undoRotate() {
+        if (this.center == Constants.SQUARE_CENTER) {
+        } else {
+            for (int i = 0; i < this.pieceSquares.length; i++) {
                 this.pieceSquares[i].setCoordinates(this.centerCol - this.centerRow + this.pieceSquares[i].getRow(),
                         this.centerRow + this.centerCol - this.pieceSquares[i].getCol());
             }
         }
     }
-    public Piece copyPiece(){
+
+    public Piece copyPiece() {
         return new Piece(this.coordinates, this.gamePane, this.center);
     }
-    public int getCenterRow(){
+
+    public int getCenterRow() {
         return centerRow;
     }
-    public void setRow(int[] row, int centerRow) {
+
+    public void setMe(int[] row, int[] col, int centerRow) {
         this.centerRow = centerRow;
         for (int i = 0; i < this.pieceSquares.length; i++) {
-            this.pieceSquares[i].setSquareRow(row[i]);
+            this.pieceSquares[i].setCoordinates(col[i], row[i]);
+        }
+    }
+
+    public void movePieceToFront() {
+        for (int i = 0; i < this.pieceSquares.length; i++) {
+            this.pieceSquares[i].moveToFront();
         }
     }
 }
